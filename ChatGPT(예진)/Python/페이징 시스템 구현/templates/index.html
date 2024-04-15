@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination Example</title>
+</head>
+<body>
+    <h1>Pagination Example</h1>
+
+    <form method="POST">
+        <label for="search_keyword">Search:</label>
+        <input type="text" id="search_keyword" name="search_keyword" value="{{ pagination.search_keyword }}">
+        <button type="submit">Search</button>
+
+        <label for="sort_by">Sort by:</label>
+        <select id="sort_by" name="sort_by">
+            <option value="" {% if not pagination.sort_by %}selected{% endif %}>None</option>
+            <option value="ascending" {% if pagination.sort_by == 'ascending' %}selected{% endif %}>Ascending</option>
+            <option value="descending" {% if pagination.sort_by == 'descending' %}selected{% endif %}>Descending</option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
+    <ul>
+        {% for item in items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <div>
+        <p>Total pages: {{ pagination.get_total_pages() }}</p>
+        <p>Current page: {{ pagination.current_page }}</p>
+        <p>Page numbers:
+            {% for page_number in range(1, pagination.get_total_pages() + 1) %}
+                {% if page_number == pagination.current_page %}
+                    [{{ page_number }}]
+                {% else %}
+                    <a href="?page={{ page_number }}{% if pagination.search_keyword %}&search_keyword={{ pagination.search_keyword }}{% endif %}{% if pagination.sort_by %}&sort_by={{ pagination.sort_by }}{% endif %}">{{ page_number }}</a>
+                {% endif %}
+            {% endfor %}
+        </p>
+        {% if pagination.current_page > 1 %}
+            <a href="?page={{ pagination.current_page - 1 }}{% if pagination.search_keyword %}&search_keyword={{ pagination.search_keyword }}{% endif %}{% if pagination.sort_by %}&sort_by={{ pagination.sort_by }}{% endif %}">Previous</a>
+        {% endif %}
+        {% if pagination.current_page < pagination.get_total_pages() %}
+            <a href="?page={{ pagination.current_page + 1 }}{% if pagination.search_keyword %}&search_keyword={{ pagination.search_keyword }}{% endif %}{% if pagination.sort_by %}&sort_by={{ pagination.sort_by }}{% endif %}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>
