@@ -44,7 +44,11 @@
     <artifactId>tika-core</artifactId>
     <version>1.27</version> <!-- 현재 사용 가능한 최신 버전으로 업데이트 -->
 </dependency>
-
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version>
+</dependency>
 <dependency>
     <groupId>org.apache.tika</groupId>
     <artifactId>tika-parsers</artifactId>
