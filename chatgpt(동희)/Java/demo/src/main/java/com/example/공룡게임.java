@@ -1,3 +1,4 @@
+package com.example;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -154,10 +155,13 @@ public class 공룡게임 extends JFrame implements ActionListener, KeyListener 
     public void keyReleased(KeyEvent e) {}
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            공룡게임 game = new 공룡게임();
-            game.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-            game.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                공룡게임 game = new 공룡게임();
+                game.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+                game.setVisible(true);
+            }
         });
     }
 }
