@@ -1,0 +1,17 @@
+h2데이터베이스를 사용해서 만들었음.
+
+CREATE TABLE Students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_number VARCHAR(10) NOT NULL,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Grades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    subject VARCHAR(100) NOT NULL,
+    grade DOUBLE,
+    FOREIGN KEY (student_id) REFERENCES Students(id)
+);
+
+

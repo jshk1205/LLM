@@ -1,0 +1,10 @@
+2024-05-07 20:35:35 - Download: 740 KB/s, Upload: 236 KB/s
+2024-05-07 20:35:36 - Download: 515 KB/s, Upload: 611 KB/s
+2024-05-07 20:35:37 - Download: 462 KB/s, Upload: 760 KB/s
+2024-05-07 20:35:38 - Download: 828 KB/s, Upload: 70 KB/s
+2024-05-07 20:35:39 - Download: 54 KB/s, Upload: 145 KB/s
+2024-05-07 20:35:40 - Download: 232 KB/s, Upload: 806 KB/s
+2024-05-07 20:35:41 - Download: 298 KB/s, Upload: 96 KB/s
+2024-05-07 20:35:42 - Download: 731 KB/s, Upload: 429 KB/s
+2024-05-07 20:35:43 - Download: 743 KB/s, Upload: 431 KB/s
+2024-05-07 20:35:44 - Download: 241 KB/s, Upload: 346 KB/s

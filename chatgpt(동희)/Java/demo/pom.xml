@@ -81,6 +81,13 @@
       <artifactId>commons-dbutils</artifactId>
       <version>1.7</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.5.3</version> <!-- 사용하려는 JFreeChart 버전 -->
+    </dependency>
+
   </dependencies>
 
   <build>
