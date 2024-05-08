@@ -1,0 +1,39 @@
+CREATE TABLE IF NOT EXISTS Courses (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Instructor VARCHAR(255) NOT NULL,
+    Content TEXT,
+    Video_URL VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS Categories (
+    Category_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Category_Name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Course_Category_Mapping (
+    Course_ID INT,
+    Category_ID INT,
+    FOREIGN KEY (Course_ID) REFERENCES Courses(ID),
+    FOREIGN KEY (Category_ID) REFERENCES Categories(Category_ID),
+    PRIMARY KEY (Course_ID, Category_ID)
+);
+
+-- Categories 테이블에 데이터 삽입
+INSERT INTO Categories (Category_Name) VALUES ('C Programming');
+INSERT INTO Categories (Category_Name) VALUES ('Java Programming');
+INSERT INTO Categories (Category_Name) VALUES ('Python Programming');
+
+-- Courses 테이블에 데이터 삽입
+INSERT INTO Courses (Title, Instructor, Content, Video_URL) 
+VALUES ('C Basics', 'John Doe', 'Introduction to C programming language', 'https://www.example.com/c_basics_video');
+
+INSERT INTO Courses (Title, Instructor, Content, Video_URL) 
+VALUES ('Java Fundamentals', 'Jane Smith', 'Introduction to Java programming language', 'https://www.example.com/java_fundamentals_video');
+
+INSERT INTO Courses (Title, Instructor, Content, Video_URL) 
+VALUES ('Python Essentials', 'Alice Johnson', 'Introduction to Python programming language', 'https://www.example.com/python_essentials_video');
+
+-- Course_Category_Mapping 테이블에 데이터 삽입
+-- 예를 들어, 강의 'C Basics'는 'C Programming' 분류에 속한다고 가정합니다.
+INSERT INTO Course_Category_Mapping (Course_ID, Category_ID) VALUES (1, 1);
