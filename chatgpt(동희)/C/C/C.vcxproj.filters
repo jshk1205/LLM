@@ -13,10 +13,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\간단한그림판">
+      <UniqueIdentifier>{bcf13048-4960-47c6-98e5-6542ed7718a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="간단한그림판.c">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="main.c">
+      <Filter>소스 파일\간단한그림판</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,1 +1,4 @@
-﻿  C.vcxproj -> C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\x64\Debug\C.exe
+﻿  main.c
+C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\C\main.c(51,15): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\C\main.c(164,33): warning C4133: '함수': 'TCHAR [260]'과(와) 'const char *' 사이의 형식이 호환되지 않습니다.
+  C.vcxproj -> C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\x64\Debug\C.exe
