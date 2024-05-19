@@ -24,7 +24,7 @@
     <ProjectGuid>{5466252b-ee29-4e10-ad56-ba78702447a5}</ProjectGuid>
     <RootNamespace>Project2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>DNS서버시뮬레이터</ProjectName>
+    <ProjectName>DNS서버</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
