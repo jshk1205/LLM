@@ -1,2 +1,0 @@
-﻿  로그분석도구.c
-C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\Project1\로그분석도구.c(1,10): error C1083: 포함 파일을 열 수 없습니다. 'gtk/gtk.h': No such file or directory
