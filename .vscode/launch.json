@@ -2,6 +2,48 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "NetworkMonitor",
+      "request": "launch",
+      "mainClass": "com.example.NetworkMonitor",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "온라인강의플랫폼",
+      "request": "launch",
+      "mainClass": "com.example.온라인강의플랫폼",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "PDF변환기",
+      "request": "launch",
+      "mainClass": "com.example.PDF변환기",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "SimpleBrowser",
+      "request": "launch",
+      "mainClass": "com.example.SimpleBrowser",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "SimpleProgrammingLanguageInterpreter",
+      "request": "launch",
+      "mainClass": "com.example.SimpleProgrammingLanguageInterpreter",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "공룡게임",
+      "request": "launch",
+      "mainClass": "com.example.공룡게임",
+      "projectName": "demo"
+    },
+    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
