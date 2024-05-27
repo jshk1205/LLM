@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "StudentGradeManagementSystem",
+      "request": "launch",
+      "mainClass": "com.example.StudentGradeManagementSystem",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
       "name": "NetworkMonitor",
       "request": "launch",
       "mainClass": "com.example.NetworkMonitor",
