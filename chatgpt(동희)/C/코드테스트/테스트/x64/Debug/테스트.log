@@ -1,3 +1,0 @@
-﻿  test.c
-C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\코드테스트\테스트\test.c(67,15): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  테스트.vcxproj -> C:\Users\khho1\OneDrive\사진\바탕 화면\LLM\chatgpt(동희)\C\코드테스트\x64\Debug\테스트.exe

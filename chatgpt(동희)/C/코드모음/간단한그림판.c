@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <commdlg.h>
-#include <stdio.h>  // 파일 입출력을 위한 헤더
+#include <stdio.h>  // For standard I/O operations
 
 #define ID_FILE_SAVE 1
 #define ID_COLOR_PICKER 2
@@ -38,7 +38,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
         return 0;
     }
 
-    hwnd = CreateWindow(szAppName, TEXT("간단한 그림판"), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+    hwnd = CreateWindow(szAppName, TEXT("Simple Paint"), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
         CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
 
     ShowWindow(hwnd, iCmdShow);
@@ -191,8 +191,8 @@ void PickColor(HWND hwnd) {
     cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 
     if (ChooseColor(&cc)) {
-        currentColor = cc.rgbResult;
-        DeleteObject(hPen);
-        hPen = CreatePen(PS_SOLID, 1, currentColor);
-    }
+currentColor = cc.rgbResult;
+DeleteObject(hPen);
+hPen = CreatePen(PS_SOLID, 1, currentColor);
+}
 }
