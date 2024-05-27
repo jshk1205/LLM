@@ -1,125 +1,189 @@
-#include <stdio.h>
 #include <windows.h>
-#include <psapi.h>
-#define _CRT_SECURE_NO_WARNINGS
+#include <gdiplusheaders.h>
+#include <commdlg.h>
+#include <gdiplus.h>
+#pragma comment (lib,"Gdiplus.lib")
 
-// 함수 선언
-void create_process();
-void terminate_process(DWORD pid);
-void check_process_status(DWORD pid);
-void get_process_info(DWORD pid);
-void set_process_priority(DWORD pid, DWORD priority);
+// Global variables
+HWND hMainWindow, hImageViewer;
+Gdiplus::Bitmap* pBitmap = NULL;
+Gdiplus::Graphics* pGraphics = NULL;
+Gdiplus::Rect rcImage;
+Gdiplus::REAL scaleFactor = 1.0f;
+Gdiplus::REAL rotationAngle = 0.0f;
 
-int main() {
-    DWORD pid;
-    create_process();
+// Function prototypes
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+BOOL LoadImageFile(HWND hwnd, TCHAR* szFileName, DWORD dwSize);
+void DrawImage();
+void ZoomIn();
+void ZoomOut();
+void RotateClockwise();
+void RotateCounterClockwise();
 
-    printf("프로세스 ID를 입력하세요: ");
-    scanf_s("%lu", &pid);
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    // Initialize GDI+
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-    check_process_status(pid);
-    get_process_info(pid);
-    set_process_priority(pid, HIGH_PRIORITY_CLASS);
-    terminate_process(pid);
+    // Register window class
+    WNDCLASS wc = { 0 };
+    wc.lpfnWndProc = WndProc;
+    wc.hInstance = hInstance;
+    wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
+    wc.lpszClassName = TEXT("PhotoGallery");
+
+    if (!RegisterClass(&wc)) {
+        MessageBox(NULL, TEXT("Window Registration Failed!"), TEXT("Error!"), MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    // Create main window
+    hMainWindow = CreateWindow(TEXT("PhotoGallery"), TEXT("Photo Gallery"), WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, hInstance, NULL);
+
+    if (hMainWindow == NULL) {
+        MessageBox(NULL, TEXT("Window Creation Failed!"), TEXT("Error!"), MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    // Create image viewer
+    hImageViewer = CreateWindow(TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_BITMAP,
+        0, 0, 800, 600, hMainWindow, NULL, hInstance, NULL);
+
+    // Show window
+    ShowWindow(hMainWindow, nCmdShow);
+    UpdateWindow(hMainWindow);
+
+    // Message loop
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    // Shutdown GDI+
+    Gdiplus::GdiplusShutdown(gdiplusToken);
+
+    return (int)msg.wParam;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case WM_COMMAND:
+        switch (LOWORD(wParam)) {
+        case ID_FILE_OPEN:
+        {
+            TCHAR szFileName[MAX_PATH] = TEXT("");
+            if (LoadImageFile(hWnd, szFileName, MAX_PATH)) {
+                if (pBitmap != NULL)
+                    delete pBitmap;
+                pBitmap = Gdiplus::Bitmap::FromFile(szFileName);
+                if (pBitmap->GetLastStatus() == Gdiplus::Ok) {
+                    DrawImage();
+                }
+                else {
+                    MessageBox(hWnd, TEXT("Failed to load image!"), TEXT("Error"), MB_OK | MB_ICONERROR);
+                }
+            }
+        }
+        break;
+        case ID_EDIT_ZOOMIN:
+            ZoomIn();
+            break;
+        case ID_EDIT_ZOOMOUT:
+            ZoomOut();
+            break;
+        case ID_EDIT_ROTATECW:
+            RotateClockwise();
+            break;
+        case ID_EDIT_ROTATECCW:
+            RotateCounterClockwise();
+            break;
+        }
+        break;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
+        if (pBitmap != NULL) {
+            DrawImage();
+        }
+        EndPaint(hWnd, &ps);
+    }
+    break;
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+
+    default:
+        return DefWindowProc(hWnd, msg, wParam, lParam);
+    }
 
     return 0;
 }
 
-void create_process() {
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
-    char cmd[] = "C:\\Windows\\System32\\notepad.exe";
+BOOL LoadImageFile(HWND hwnd, TCHAR* szFileName, DWORD dwSize) {
+    OPENFILENAME ofn;
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = hwnd;
+    ofn.lpstrFilter = TEXT("Image Files\0*.bmp;*.jpg;*.png;*.gif\0All Files\0*.*\0");
+    ofn.lpstrFile = szFileName;
+    ofn.nMaxFile = dwSize;
+    ofn.lpstrTitle = TEXT("Select an image file");
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
 
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
-
-    if (!CreateProcess(NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
-        fprintf(stderr, "CreateProcess 실패. 오류 코드: %lu\n", GetLastError());
-        return;
-    }
-
-    printf("자식 프로세스 생성됨. PID: %lu\n", pi.dwProcessId);
-
-    // 자식 프로세스가 종료될 때까지 대기
-    WaitForSingleObject(pi.hProcess, INFINITE);
-
-    // 핸들 닫기
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
+    return GetOpenFileName(&ofn);
 }
 
-void terminate_process(DWORD pid) {
-    HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, pid);
-    if (hProcess == NULL) {
-        fprintf(stderr, "프로세스 핸들을 열 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-        return;
+void DrawImage() {
+    if (pGraphics == NULL) {
+        pGraphics = new Gdiplus::Graphics(hImageViewer);
     }
 
-    if (!TerminateProcess(hProcess, 1)) {
-        fprintf(stderr, "프로세스를 종료할 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-    }
-    else {
-        printf("프로세스 종료됨. PID: %lu\n", pid);
-    }
+    if (pBitmap != NULL) {
+        pGraphics->Clear(Gdiplus::Color(255, 255, 255));
+        Gdiplus::RectF rectDst(0, 0, (Gdiplus::REAL)pBitmap->GetWidth() * scaleFactor, (Gdiplus::REAL)pBitmap->GetHeight() * scaleFactor);
+        Gdiplus::PointF center((Gdiplus::REAL)hImageViewer->clientRect.right / 2, (Gdiplus::REAL)hImageViewer->clientRect.bottom / 2);
+        Gdiplus::PointF offset(-rectDst.Width / 2, -rectDst.Height / 2);
 
-    CloseHandle(hProcess);
+        pGraphics->TranslateTransform(center.X, center.Y);
+        pGraphics->RotateTransform(rotationAngle);
+        pGraphics->TranslateTransform(offset.X, offset.Y);
+        pGraphics->DrawImage(pBitmap, rectDst);
+    }
 }
 
-void check_process_status(DWORD pid) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
-    if (hProcess == NULL) {
-        fprintf(stderr, "프로세스 핸들을 열 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-        return;
+void ZoomIn() {
+    if (pBitmap != NULL) {
+        scaleFactor += 0.1f;
+        DrawImage();
     }
+}
 
-    DWORD exitCode;
-    if (GetExitCodeProcess(hProcess, &exitCode)) {
-        if (exitCode == STILL_ACTIVE) {
-            printf("프로세스 실행 중. PID: %lu\n", pid);
-        }
-        else {
-            printf("프로세스 종료됨. PID: %lu, 종료 코드: %lu\n", pid, exitCode);
+void ZoomOut() {
+    if (pBitmap != NULL) {
+        if (scaleFactor > 0.2f) {
+            scaleFactor -= 0.1f;
+            DrawImage();
         }
     }
-    else {
-        fprintf(stderr, "프로세스 상태를 가져올 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-    }
-
-    CloseHandle(hProcess);
 }
 
-void get_process_info(DWORD pid) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
-    if (hProcess == NULL) {
-        fprintf(stderr, "프로세스 핸들을 열 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-        return;
+void RotateClockwise() {
+    if (pBitmap != NULL) {
+        rotationAngle += 90.0f;
+        DrawImage();
     }
-
-    PROCESS_MEMORY_COUNTERS pmc;
-    if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
-        printf("프로세스 메모리 사용량: %lu KB\n", pmc.WorkingSetSize / 1024);
-    }
-    else {
-        fprintf(stderr, "프로세스 메모리 정보를 가져올 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-    }
-
-    CloseHandle(hProcess);
 }
 
-void set_process_priority(DWORD pid, DWORD priority) {
-    HANDLE hProcess = OpenProcess(PROCESS_SET_INFORMATION, FALSE, pid);
-    if (hProcess == NULL) {
-        fprintf(stderr, "프로세스 핸들을 열 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-        return;
+void RotateCounterClockwise() {
+    if (pBitmap != NULL) {
+        rotationAngle -= 90.0f;
+        DrawImage();
     }
-
-    if (!SetPriorityClass(hProcess, priority)) {
-        fprintf(stderr, "프로세스 우선 순위를 설정할 수 없음. PID: %lu. 오류 코드: %lu\n", pid, GetLastError());
-    }
-    else {
-        printf("프로세스 우선 순위 설정됨. PID: %lu, 우선 순위: %lu\n", pid, priority);
-    }
-
-    CloseHandle(hProcess);
 }
