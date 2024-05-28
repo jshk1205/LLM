@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>keystroke macro</title>
+</head>
+<body>
+    <h1>keystroke macro</h1>
+    <form action="/" method="post">
+        <label for="text">Text to enter:</label>
+        <input type="text" id="text" name="text" required><br><br>
+        <label for="interval">Repeat interval (seconds):</label>
+        <input type="number" id="interval" name="interval" step="0.1" required><br><br>
+        <input type="submit" value="Start macros">
+    </form>
+    <form action="/?stop=true" method="get">
+        <input type="submit" value="Stop macros">
+    </form>
+</body>
+</html>
