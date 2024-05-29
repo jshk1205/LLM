@@ -13,9 +13,9 @@ public class OnlineCoursePlatform extends JFrame {
     private JList<String> courseList;
     private JTextArea courseDetailsArea;
 
-    private static final String JDBC_URL = "jdbc:h2:~/test";
-    private static final String USERNAME = "sa";
-    private static final String PASSWORD = "";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/test";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
 
     public OnlineCoursePlatform() {
         setTitle("Online Course Platform");

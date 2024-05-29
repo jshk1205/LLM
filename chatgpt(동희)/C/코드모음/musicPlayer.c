@@ -1,3 +1,5 @@
+// 프로젝트 -> 속성 - > 링커 - > 입력 - > winm.lib 종속성추가해야됨
+
 #include <windows.h>
 #include <mmsystem.h>
 #include <commdlg.h>
