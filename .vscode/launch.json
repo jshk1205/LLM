@@ -64,8 +64,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/c++",
+      "program": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/c++/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
