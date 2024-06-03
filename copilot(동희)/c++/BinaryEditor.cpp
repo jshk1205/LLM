@@ -10,7 +10,7 @@
 // LPWSTR, LPCWSTR, std::streamoff에 대한 형식을 잘 맞춰야돼
 
 
-//현재 수정중입니다
+//현재 수정중입니다.
 #include <iostream>
 #include <string>
 #include <vector>
