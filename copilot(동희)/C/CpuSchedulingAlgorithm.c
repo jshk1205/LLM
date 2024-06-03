@@ -3,13 +3,13 @@
 
 typedef struct {
     int id;
-    int arrivalTime; // 프로세스 도착 시간
-    int burstTime; // 프로세스 실행에 필요한 시간
-    int priority; // 프로세스 우선순위
-    int remainingBurstTime; // 남은 실행 시간
+    int arrivalTime; // Process arrival time
+    int burstTime; // Time required for process execution
+    int priority; // Process priority
+    int remainingBurstTime; // Remaining execution time
 } Process;
 
-// FCFS 스케줄링
+// FCFS scheduling
 void fcfsScheduling(Process* processes, int count) {
     int* waitingTime = (int*)malloc(sizeof(int) * count);
     int* turnAroundTime = (int*)malloc(sizeof(int) * count);
@@ -21,7 +21,7 @@ void fcfsScheduling(Process* processes, int count) {
         turnAroundTime[i] = waitingTime[i] + processes[i].burstTime;
     }
 
-    printf("FCFS 스케줄링 결과:\n");
+    printf("FCFS scheduling result:\n");
     printf("Process ID\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n");
     for (int i = 0; i < count; i++) {
         printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\n", processes[i].id, processes[i].arrivalTime,
@@ -32,12 +32,12 @@ void fcfsScheduling(Process* processes, int count) {
     free(turnAroundTime);
 }
 
-// SJF 스케줄링
+// SJF scheduling
 void sjfScheduling(Process* processes, int count) {
     int* waitingTime = (int*)malloc(sizeof(int) * count);
     int* turnAroundTime = (int*)malloc(sizeof(int) * count);
 
-    // 프로세스를 실행 시간 기준으로 오름차순으로 정렬
+    // Sort processes in ascending order based on execution time
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             if (processes[j].burstTime > processes[j + 1].burstTime) {
@@ -55,7 +55,7 @@ void sjfScheduling(Process* processes, int count) {
         turnAroundTime[i] = waitingTime[i] + processes[i].burstTime;
     }
 
-    printf("\nSJF 스케줄링 결과:\n");
+    printf("\nSJF scheduling result:\n");
     printf("Process ID\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n");
     for (int i = 0; i < count; i++) {
         printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\n", processes[i].id, processes[i].arrivalTime,
@@ -66,7 +66,7 @@ void sjfScheduling(Process* processes, int count) {
     free(turnAroundTime);
 }
 
-// 라운드 로빈 스케줄링
+// Round Robin scheduling
 void roundRobinScheduling(Process* processes, int count, int timeQuantum) {
     int* waitingTime = (int*)malloc(sizeof(int) * count);
     int* turnAroundTime = (int*)malloc(sizeof(int) * count);
@@ -95,7 +95,7 @@ void roundRobinScheduling(Process* processes, int count, int timeQuantum) {
         }
     }
 
-    printf("\n라운드 로빈 스케줄링 결과:\n");
+    printf("\nRound Robin scheduling result:\n");
     printf("Process ID\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n");
     for (int i = 0; i < count; i++) {
         printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\n", processes[i].id, processes[i].arrivalTime,
@@ -110,7 +110,7 @@ void roundRobinScheduling(Process* processes, int count, int timeQuantum) {
 int main() {
     Process processes[] = {
         {1, 0, 6, 2}, {2, 2, 8, 3}, {3, 3, 7, 1}, {4, 4, 3, 2}, {5, 6, 4, 4}
-    }; // 프로세스 예제
+    }; // Process examples
 
     int count = sizeof(processes) / sizeof(processes[0]);
     int timeQuantum = 2;

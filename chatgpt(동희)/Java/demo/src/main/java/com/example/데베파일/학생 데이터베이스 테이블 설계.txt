@@ -14,4 +14,15 @@ CREATE TABLE Grades (
     FOREIGN KEY (student_id) REFERENCES Students(id)
 );
 
+-- Students 테이블에 데이터 삽입
+INSERT INTO Students (student_number, name) VALUES
+('2021001', 'John Doe'),
+('2021002', 'Jane Smith');
+
+-- Grades 테이블에 데이터 삽입
+INSERT INTO Grades (student_id, subject, grade) VALUES
+(1, 'Math', 90.5),
+(1, 'Science', 85),
+(2, 'Math', 88),
+(2, 'Science', 92.5);
 
