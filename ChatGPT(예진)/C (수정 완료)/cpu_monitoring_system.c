@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <windows.h>
 #include <tlhelp32.h>
-#include <stdbool.h>
-#include <string.h>
 
 #define DEFAULT_THRESHOLD 90
 #define DEFAULT_DURATION 10
@@ -109,7 +109,6 @@ double getCPUPercentage() {
     cpuPercent = 100.0 - ((idleTicks * 100.0) / totalTicks);
     return cpuPercent;
 }
-
 
 DWORD WINAPI monitorCPU(LPVOID lpParam) {
     FILE* file = fopen("cpu_monitor.log", "w");
