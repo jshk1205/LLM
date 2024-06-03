@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "StudentGradeManagementSystem",
+      "request": "launch",
+      "mainClass": "com.example.Student.StudentGradeManagementSystem",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
       "name": "OnlineCoursePlatform",
       "request": "launch",
       "mainClass": "com.example.OnlineCoursePlatform",
@@ -64,8 +71,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/c++",
-      "program": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/c++/build/Debug/outDebug",
+      "cwd": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/C/로그분석",
+      "program": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/C/로그분석/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
