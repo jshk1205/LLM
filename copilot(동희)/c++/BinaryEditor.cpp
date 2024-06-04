@@ -1,165 +1,224 @@
-// 바이너리에디터를 만들려고해
-// 바이너리에디터는 파일을 열어서 16진수로 출력이되어야해 수정할수있게해
-// 파일을 열면 파일의 크기와 파일의 16진수로된 내용을 보여줘야해
-// 파일을 열때 고정경로가 아닌 사용자가 직접 파일을 선택할수있게해
-// 파일을 수정하면 파일의 크기와 파일의 16진수로된 내용이 수정되어야해
-// 파일을 저장하면 수정된 내용이 파일에 저장되어야해
-// 파일을 닫으면 파일이 닫혀야해
-// 파일을 열때 파일이 없으면 파일이 없다고 알려줘야해
-// 파일을 열때 파일이 없으면 파일을 생성할수있게해
-// LPWSTR, LPCWSTR, std::streamoff에 대한 형식을 잘 맞춰야돼
+//바이너리 에디터를 만들려고함
+//바이너리 에디터는 파일을 열어서 16진수로 보여주고, 수정할 수 있게 해주는 프로그램
+//16진수로 보여주고 파일을 고칠 수 있도록 해야됨
 
 
-//현재 수정중입니다.
+//사용법
+//1. 파일 열기 (같은 위치에 파일이 있어야함)
+//2. 파일 보기
+//3. 파일 수정 (오프셋은 문자의 위치를 나타냄 간격은 16바이트)
+//4. 파일 저장
+//5. 종료
+
+//예시
+//1. 파일 열기
+//파일 이름을 입력하세요: test.txt
+//2. 파일 보기
+//파일 크기: 11바이트
+//파일 내용:
+//00000000 48 65 6c 6c 6f 2c 20 57 6f 72 6c
+//3. 파일 수정
+//수정할 오프셋을 입력하세요: 0
+//수정할 값(16진수)을 입력하세요: 41
+//4. 파일 저장
+//5. 종료
+
+//1. 파일 열기
+//파일 이름을 입력하세요: test.txt
+//2. 파일 보기
+//파일 크기: 11바이트
+//파일 내용:
+//00000000 41 65 6c 6c 6f 2c 20 57 6f 72 6c
+
+
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <windows.h>
-#include <commdlg.h>
-#include <tchar.h>
+#include <algorithm>
+#include <cctype>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <sstream>
-#include <iomanip>
-#include <locale>
-#include <codecvt>
+
 
 using namespace std;
+
+//바이너리 에디터 클래스
 class BinaryEditor
 {
 public:
-    BinaryEditor()
-    {
-        this->fileName = L"";
-        this->fileSize = 0;
-        this->fileData = nullptr;
-    }
-    ~BinaryEditor()
-    {
-        if (fileData != nullptr)
-        {
-            delete[] fileData;
-        }
-    }
-    void openFile()
-    {
-        OPENFILENAME ofn;
-        TCHAR szFile[260];
-        ZeroMemory(&ofn, sizeof(ofn));
-        ofn.lStructSize = sizeof(ofn);
-        ofn.hwndOwner = NULL;
-        ofn.lpstrFile = szFile;
-        ofn.lpstrFile[0] = '\0';
-        ofn.nMaxFile = sizeof(szFile);
-        ofn.lpstrFilter = _T("All\0*.*\0Text\0*.TXT\0");
-        ofn.nFilterIndex = 1;
-        ofn.lpstrFileTitle = NULL;
-        ofn.nMaxFileTitle = 0;
-        ofn.lpstrInitialDir = NULL;
-        ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-        if (GetOpenFileName(&ofn) == TRUE)
-        {
-            this->fileName = szFile;
-            std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-            std::string narrowFileName = converter.to_bytes(this->fileName); // 변환된 부분
-            ifstream file(narrowFileName, ios::binary | ios::ate);
-            if (file.is_open())
-            {
-                this->fileSize = file.tellg();
-                file.seekg(0, ios::beg);
-                this->fileData = new char[this->fileSize];
-                file.read(this->fileData, this->fileSize);
-                file.close(); // 파일을 닫습니다.
-
-                // 파일의 내용을 16진수로 변환하여 문자열에 저장합니다.
-                std::ostringstream oss;
-                for (std::streamoff i = 0; i < this->fileSize; ++i)
-                {
-                    oss << std::hex << std::setw(2) << std::setfill('0') << (0xff & static_cast<unsigned>(this->fileData[i])) << ' ';
-                }
-                this->hexData = oss.str();
-            }
-        }
-    }
-    void saveHexFile(const std::string &fileName)
-    {
-        ofstream file(fileName);
-        if (file.is_open())
-        {
-            file << this->hexData;
-            file.close();
-        }
-    }
-    void editFile()
-    {
-        if (this->fileData == nullptr)
-        {
-            cout << "파일이 없습니다" << endl;
-            return;
-        }
-        while (true)
-        {
-            cout << "1. 파일크기" << endl;
-            cout << "2. 파일내용" << endl;
-            cout << "3. 저장" << endl;
-            cout << "4. 닫기" << endl;
-            int menu;
-            cin >> menu;
-            if (menu == 1)
-            {
-                cout << "파일크기: " << this->fileSize << endl;
-            }
-            else if (menu == 2)
-            {
-                for (int i = 0; i < this->fileSize; i++)
-                {
-                    cout << hex << setw(2) << setfill('0') << (int)(unsigned char)this->fileData[i] << " ";
-                    if (i % 16 == 15)
-                    {
-                        cout << endl;
-                    }
-                }
-                cout << endl;
-            }
-            else if (menu == 3)
-            {
-                saveHexFile("test.txt");
-            }
-            else if (menu == 4)
-            {
-                break;
-            }
-        }
-    }
-
+    BinaryEditor();
+    ~BinaryEditor();
+    void OpenFile(string filename);
+    void Display();
+    void Edit();
+    void Save();
+    void Close();
 private:
-    wstring fileName;
-    std::streamoff fileSize;
-    char *fileData; // 수정된 부분
-    std::string hexData;
+    ifstream m_ifs;
+    ofstream m_ofs;
+    string m_filename;
+    vector<unsigned char> m_buffer;
+    int m_filesize;
 };
+
+//생성자
+BinaryEditor::BinaryEditor()
+{
+    m_filesize = 0;
+}
+
+//소멸자
+BinaryEditor::~BinaryEditor()
+{
+    Close();
+}
+
+//파일 열기
+
+void BinaryEditor::OpenFile(string filename)
+{
+    m_filename = filename;
+    m_ifs.open(filename.c_str(), ios::in | ios::binary);
+    if (!m_ifs.is_open())
+    {
+        cout << "파일을 열 수 없습니다." << endl;
+        return;
+    }
+
+    m_ifs.seekg(0, ios::end);
+    m_filesize = m_ifs.tellg();
+    m_ifs.seekg(0, ios::beg);
+
+    m_buffer.resize(m_filesize);
+    m_ifs.read((char*)&m_buffer[0], m_filesize);
+    m_ifs.close();
+}
+
+//파일 보여주기
+void BinaryEditor::Display()
+{
+    if (m_filesize == 0)
+    {
+        cout << "파일이 열리지 않았습니다." << endl;
+        return;
+    }
+
+    cout << "파일 크기: " << m_filesize << "바이트" << endl;
+    cout << "파일 내용:" << endl;
+
+    for (int i = 0; i < m_filesize; i++)
+    {
+        if (i % 16 == 0)
+        {
+            cout << endl;
+            cout << hex << setw(8) << setfill('0') << i << " ";
+        }
+
+        cout << hex << setw(2) << setfill('0') << (int)m_buffer[i] << " ";
+    }
+
+    cout << endl;
+}
+
+//파일 수정하기
+void BinaryEditor::Edit()
+{
+    if (m_filesize == 0)
+    {
+        cout << "파일이 열리지 않았습니다." << endl;
+        return;
+    }
+
+    int offset;
+    cout << "수정할 오프셋을 입력하세요: ";
+    cin >> offset;
+
+    if (offset < 0 || offset >= m_filesize)
+    {
+        cout << "잘못된 오프셋입니다." << endl;
+        return;
+    }
+
+    int value;
+    cout << "수정할 값(16진수)을 입력하세요: ";
+    cin >> hex >> value;
+
+    m_buffer[offset] = value;
+}
+
+//파일 저장하기
+void BinaryEditor::Save()
+{
+    if (m_filesize == 0)
+    {
+        cout << "파일이 열리지 않았습니다." << endl;
+        return;
+    }
+
+    m_ofs.open(m_filename.c_str(), ios::out | ios::binary);
+    m_ofs.write((char*)&m_buffer[0], m_filesize);
+    m_ofs.close();
+}
+
+//파일 닫기
+void BinaryEditor::Close()
+{
+    m_ifs.close();
+    m_ofs.close();
+    m_filesize = 0;
+    m_buffer.clear();
+}
 
 int main()
 {
-    BinaryEditor binaryEditor;
+    BinaryEditor editor;
+    string filename;
+    int choice;
+
     while (true)
     {
-        cout << "1. 파일열기" << endl;
-        cout << "2. 파일수정" << endl;
-        cout << "3. 종료" << endl;
-        int menu;
-        cin >> menu;
-        if (menu == 1)
+        cout << "1. 파일 열기" << endl;
+        cout << "2. 파일 보기" << endl;
+        cout << "3. 파일 수정" << endl;
+        cout << "4. 파일 저장" << endl;
+        cout << "5. 종료" << endl;
+        cout << "선택: ";
+        cin >> choice;
+
+        switch (choice)
         {
-            binaryEditor.openFile();
-        }
-        else if (menu == 2)
-        {
-            binaryEditor.editFile();
-        }
-        else if (menu == 3)
-        {
+        case 1:
+            cout << "파일 이름을 입력하세요: ";
+            cin >> filename;
+            editor.OpenFile(filename);
+            break;
+        case 2:
+            editor.Display();
+            break;
+        case 3:
+            editor.Edit();
+            break;
+        case 4:
+            editor.Save();
+            break;
+        case 5:
+            editor.Close();
+            return 0;
+        default:
+            cout << "잘못된 선택입니다." << endl;
             break;
         }
     }
+
     return 0;
 }
+
+
+
+
+
+
