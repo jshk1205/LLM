@@ -122,6 +122,9 @@
     "xstring": "cpp",
     "xtr1common": "cpp",
     "xutility": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "실시간 채팅 애플리케이션 클라.C": "cpp",
+    "windows.h": "c",
+    "fcntl.h": "c"
   }
 }
