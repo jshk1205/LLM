@@ -3,6 +3,95 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ChatClient",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.ChatClient",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "ChatServer",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.ChatServer",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "ProcessSimulation",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.ProcessSimulation",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "ProcessSimulation",
+      "request": "launch",
+      "mainClass": "ProcessSimulation",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Tetris",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.Tetris",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "SimplePaint",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.SimplePaint",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "SimplePaint",
+      "request": "launch",
+      "mainClass": "SimplePaint"
+    },
+    {
+      "type": "java",
+      "name": "MusicPlayer",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.MusicPlayer",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "IndividualExpenditureManagement",
+      "request": "launch",
+      "mainClass": "com.example.CopioltTest.IndividualExpenditureManagement",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "SimplePaintExample",
+      "request": "launch",
+      "mainClass": "SimplePaintExample",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "MusicPlayer",
+      "request": "launch",
+      "mainClass": "MusicPlayer"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "com.example.App",
+      "projectName": "demo"
+    },
+    {
+      "type": "java",
+      "name": "IndividualExpenditureManagement",
+      "request": "launch",
+      "mainClass": "IndividualExpenditureManagement",
+      "projectName": ""
+    },
+    {
+      "type": "java",
       "name": "StudentGradeManagementSystem",
       "request": "launch",
       "mainClass": "com.example.Student.StudentGradeManagementSystem",
