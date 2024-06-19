@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.sql.*;
 
 public class StudentGradeManagementSystem extends JFrame {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/messenger";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "rootpassword";
+    private static final String DB_PASSWORD = "1234";
     
 
     private JTable table;
