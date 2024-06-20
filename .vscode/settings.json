@@ -126,7 +126,24 @@
     "실시간 채팅 애플리케이션 클라.C": "cpp",
     "windows.h": "c",
     "fcntl.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "array": "cpp",
+    "condition_variable": "cpp",
+    "cstdarg": "cpp",
+    "deque": "cpp",
+    "filesystem": "cpp",
+    "functional": "cpp",
+    "list": "cpp",
+    "queue": "cpp",
+    "random": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stack": "cpp",
+    "unordered_map": "cpp",
+    "xhash": "cpp",
+    "xtree": "cpp",
+    "csignal": "cpp",
+    "set": "cpp"
   },
   "java.debug.settings.onBuildFailureProceed": true
 }

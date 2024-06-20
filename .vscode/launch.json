@@ -160,8 +160,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/C/로그분석",
-      "program": "c:/Users/khho1/OneDrive/사진/바탕 화면/LLM/copilot(동희)/C/로그분석/build/Debug/outDebug",
+      "cwd": ".",
+      "program": "build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
